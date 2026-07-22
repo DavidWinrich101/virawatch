@@ -959,4 +959,5 @@ def predict_batch(request: BatchPredictionRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)#   V 5 . 5   f o r c e   r e b u i l d  
+ 
