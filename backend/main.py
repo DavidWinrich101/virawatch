@@ -1,5 +1,5 @@
 """
-ViraWatch - FastAPI Backend (V5.4)
+ViraWatch - FastAPI Backend (V5.5)
 ===================================
 Multi-model prediction API with comprehensive prediction intelligence.
 
@@ -13,7 +13,7 @@ Features:
 - 4-Week Forecast
 - XGBoost loads from native JSON format to avoid use_label_encoder issues
 
-Version: 5.4.0
+Version: 5.5.0
 Author: ViraWatch Project
 Date: 2026-07-22
 """
@@ -633,7 +633,7 @@ def make_prediction(
 app = FastAPI(
     title="ViraWatch API",
     description="Lassa Fever outbreak risk prediction using real climate and epidemiological data",
-    version="5.4.0"
+    version="5.5.0"
 )
 
 # CORS - Production Ready
@@ -669,7 +669,7 @@ MODELS = load_model_artifacts()
 def root():
     return {
         "message": "ViraWatch API",
-        "version": "5.4.0",
+        "version": "5.5.0",
         "status": "operational",
         "endpoints": ["/health", "/model-info", "/predict", "/predict-comparison", "/predict-batch"]
     }
@@ -692,7 +692,7 @@ def health_check():
         "xgboost_format": xgb_format if xgb_loaded else None,
         "primary_model": get_primary_model(),
         "platt_scaling": False,
-        "version": "5.4.0",
+        "version": "5.5.0",
         "timestamp": datetime.now().isoformat(),
         "note": "Random Forest is fully operational. XGBoost loaded from native JSON format."
     }
@@ -719,7 +719,7 @@ def model_info():
     xgb_format = MODELS.get('xgb', {}).get('format', None)
     
     return {
-        "version": "5.4.0",
+        "version": "5.5.0",
         "primary_model": primary,
         "selection_reason": f"{primary} selected because it achieved the strongest validation performance during model evaluation.",
         "models": {
@@ -822,47 +822,19 @@ def predict_comparison(
         xgb_error = xgb_data.get('error', 'XGBoost not loaded') if xgb_data else 'XGBoost not available'
         print(f"[Warning] XGBoost unavailable: {xgb_error}")
     
-    # 2. Determine primary model intelligently
-    primary_model_name = get_primary_model()
-    print(f"[Debug] get_primary_model() returned: {primary_model_name}")
+    # 2. FORCE Random Forest as primary (it's the reliable one)
+    primary_result = rf_result
+    comparison_result = xgb_result
+    primary_model_name = "Random Forest"
+    comparison_name = "XGBoost" if xgb_is_loaded else "XGBoost (Not Available)"
+    print(f"[Debug] Using RF as primary: {primary_result.get('probability') if primary_result and not isinstance(primary_result, dict) else 'None'}")
     
-    # 3. SMART SELECTION with fallback
-    if primary_model_name == "Random Forest":
-        if rf_result and not isinstance(rf_result, dict):
-            primary_result = rf_result
-            comparison_result = xgb_result
-            comparison_name = "XGBoost" if xgb_is_loaded else "XGBoost (Not Available)"
-        elif xgb_result and not isinstance(xgb_result, dict):
-            primary_result = xgb_result
-            comparison_result = rf_result
-            comparison_name = "Random Forest (Fallback)"
-            primary_model_name = "XGBoost (Fallback)"
-        else:
-            primary_result = None
-            comparison_result = None
-            comparison_name = "None Available"
-    else:
-        if xgb_result and not isinstance(xgb_result, dict):
-            primary_result = xgb_result
-            comparison_result = rf_result
-            comparison_name = "Random Forest" if rf_result and not isinstance(rf_result, dict) else "Random Forest (Not Available)"
-            primary_model_name = "XGBoost"
-        elif rf_result and not isinstance(rf_result, dict):
-            primary_result = rf_result
-            comparison_result = xgb_result
-            comparison_name = "XGBoost"
-            primary_model_name = "Random Forest (Fallback)"
-        else:
-            primary_result = None
-            comparison_result = None
-            comparison_name = "None Available"
-    
-    # 4. Input Quality Assessment
+    # 3. Input Quality Assessment
     input_quality = assess_input_quality(
         state, epi_week, year, rainfall_mm, temp_c, recent_cases, endemic_flag
     )
     
-    # 5. Prediction Confidence
+    # 4. Prediction Confidence
     if primary_result and not isinstance(primary_result, dict):
         prediction_confidence = assess_prediction_confidence(
             primary_result['probability'],
@@ -871,7 +843,7 @@ def predict_comparison(
     else:
         prediction_confidence = {"level": "Unknown", "score": 0, "justification": "Unable to assess confidence"}
     
-    # 6. Agreement Analysis
+    # 5. Agreement Analysis
     agreement = None
     if (rf_result and xgb_result and 
         not isinstance(rf_result, dict) and 
@@ -883,7 +855,7 @@ def predict_comparison(
             xgb_result.get('risk_tier', 'Low')
         )
         print(f"[Debug] Agreement calculated: {agreement.get('level') if agreement else 'None'}")
-    elif xgb_error or not xgb_is_loaded:
+    else:
         rf_prob = rf_result['probability'] * 100 if rf_result and not isinstance(rf_result, dict) else None
         agreement = {
             "level": "N/A",
@@ -897,7 +869,7 @@ def predict_comparison(
             "error": xgb_error or "XGBoost not loaded"
         }
     
-    # 7. Prediction Reliability
+    # 6. Prediction Reliability
     reliability = assess_prediction_reliability(
         input_quality,
         prediction_confidence,
@@ -905,7 +877,7 @@ def predict_comparison(
         primary_result
     )
     
-    # 8. Overall Assessment
+    # 7. Overall Assessment
     overall = generate_overall_assessment(
         primary_result,
         prediction_confidence,
@@ -914,7 +886,7 @@ def predict_comparison(
         reliability
     )
     
-    # 9. Build response
+    # 8. Build response
     response = {
         "state": state,
         "epi_week": epi_week,
