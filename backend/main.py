@@ -158,52 +158,25 @@ def load_model_artifacts():
                                 'format': 'native_json'
                             }
                             print(f"[Model] ✅ XGBoost loaded from native JSON format")
-                            continue  # Skip pickle fallback
+                            continue
                         except Exception as e:
                             print(f"[Model] ⚠️ Failed to load native JSON: {e}")
-                            # Fall through to pickle
                 
-                # Try pickle/joblib format (for RF and XGB fallback)
+                # Try pickle/joblib format
                 if os.path.exists(model_path):
                     try:
                         model = joblib.load(model_path)
                         config = json.load(open(config_path)) if os.path.exists(config_path) else None
-                        
-                        # Verify model is fitted
-                        try:
-                            dummy = np.zeros((1, len(FEATURE_COLS)))
-                            model.predict_proba(dummy)
-                            models[model_key] = {
-                                'model': model,
-                                'scaler': scaler,
-                                'config': config,
-                                'loaded': True
-                            }
-                            print(f"[Model] ✅ {meta['name']} loaded successfully (pickle)")
-                        except AttributeError as e:
-                            if 'use_label_encoder' in str(e) and model_key == 'xgb':
-                                print(f"[Model] ⚠️ {meta['name']} loaded but has use_label_encoder warning")
-                                models[model_key] = {
-                                    'model': model,
-                                    'scaler': scaler,
-                                    'config': config,
-                                    'loaded': True,
-                                    'verification_warning': True
-                                }
-                            else:
-                                print(f"[Model] ⚠️ {meta['name']} failed verification: {e}")
-                                models[model_key] = {'loaded': False}
-                    except ModuleNotFoundError as e:
-                        if 'numpy._core' in str(e) and model_key == 'xgb':
-                            print(f"[Model] ⚠️ XGBoost numpy compatibility issue: {e}")
-                            print(f"[Model] ℹ️ Make sure xgboost_model.json exists")
-                            models[model_key] = {
-                                'loaded': False,
-                                'error': 'numpy._core not found - please use native JSON format',
-                                'error_type': 'numpy_compatibility'
-                            }
-                        else:
-                            raise e
+                        models[model_key] = {
+                            'model': model,
+                            'scaler': scaler,
+                            'config': config,
+                            'loaded': True
+                        }
+                        print(f"[Model] ✅ {meta['name']} loaded successfully (pickle)")
+                    except Exception as e:
+                        print(f"[Model] ⚠️ Failed to load {meta['name']}: {e}")
+                        models[model_key] = {'loaded': False}
                 else:
                     print(f"[Model] ⚠️ {meta['name']} model file not found")
                     models[model_key] = {'loaded': False}
@@ -226,32 +199,27 @@ def construct_features(state, epi_week, year, rainfall_mm, temp_c, recent_cases,
 
     features['confirmed_cases'] = float(recent_cases)
 
-    # Lag features with persistence model
     features['lag_1'] = float(recent_cases) * 0.9
     features['lag_2'] = float(recent_cases) * 0.7
     features['lag_3'] = float(recent_cases) * 0.5
     features['lag_4'] = float(recent_cases) * 0.3
 
-    # Rainfall with 8-week lag
     rainfall_key = (state, epi_week)
     if rainfall_key in static_data.get('rainfall_lag8', {}):
         features['rainfall_lag8'] = static_data['rainfall_lag8'][rainfall_key]
     else:
         features['rainfall_lag8'] = float(rainfall_mm) * 0.8
 
-    # Temperature
     if state in static_data.get('climate', {}):
         features['temp_lag4'] = static_data['climate'][state]['temp_c']
     else:
         features['temp_lag4'] = float(temp_c)
 
-    # Humidity
     if state in static_data.get('climate', {}):
         features['humidity_lag4'] = static_data['climate'][state]['vapor_pressure_kpa']
     else:
         features['humidity_lag4'] = 2.2 if rainfall_mm > 100 else 1.8
 
-    # Population density
     if state in static_data.get('population', {}):
         features['pop_density'] = static_data['population'][state]
     else:
@@ -312,7 +280,6 @@ def estimate_case_range(probability, is_endemic):
 
 
 def generate_forecast(state, epi_week, year, probability, is_endemic):
-    """Generate 4-week forecast based on current prediction."""
     forecast = []
     current_prob = probability
     
@@ -573,7 +540,6 @@ def get_primary_model():
             xgb_config = json.load(f)
             xgb_f2 = xgb_config.get('metrics', {}).get('Validation', {}).get('F2-Score', 0)
     
-    # Fallback if no config files exist
     if rf_f2 == 0 and xgb_f2 == 0:
         print("[Warning] No config files found - defaulting to Random Forest")
         return "Random Forest"
@@ -589,7 +555,6 @@ def make_prediction(
     state, epi_week, year, rainfall_mm, temp_c, recent_cases, 
     endemic_flag, model_data, static_data, model_key
 ):
-    """Standard prediction for Random Forest and XGBoost."""
     features = construct_features(
         state, epi_week, year, rainfall_mm, temp_c, 
         recent_cases, endemic_flag, static_data
@@ -636,7 +601,6 @@ app = FastAPI(
     version="5.5.0"
 )
 
-# CORS - Production Ready
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -783,12 +747,10 @@ def predict_comparison(
     recent_cases: int = Query(..., ge=0),
     endemic_flag: int = Query(..., ge=0, le=1)
 ):
-    # 1. Get BOTH predictions (if available)
     rf_result = None
     xgb_result = None
     xgb_error = None
     
-    # Try Random Forest
     rf_data = MODELS.get('rf')
     if rf_data and rf_data.get('loaded'):
         try:
@@ -803,7 +765,6 @@ def predict_comparison(
     else:
         print("[Error] RF model not loaded!")
     
-    # Try XGBoost
     xgb_data = MODELS.get('xgb')
     xgb_is_loaded = xgb_data and xgb_data.get('loaded', False)
     
@@ -822,19 +783,17 @@ def predict_comparison(
         xgb_error = xgb_data.get('error', 'XGBoost not loaded') if xgb_data else 'XGBoost not available'
         print(f"[Warning] XGBoost unavailable: {xgb_error}")
     
-    # 2. FORCE Random Forest as primary (it's the reliable one)
+    # FORCE Random Forest as primary
     primary_result = rf_result
     comparison_result = xgb_result
     primary_model_name = "Random Forest"
     comparison_name = "XGBoost" if xgb_is_loaded else "XGBoost (Not Available)"
     print(f"[Debug] Using RF as primary: {primary_result.get('probability') if primary_result and not isinstance(primary_result, dict) else 'None'}")
     
-    # 3. Input Quality Assessment
     input_quality = assess_input_quality(
         state, epi_week, year, rainfall_mm, temp_c, recent_cases, endemic_flag
     )
     
-    # 4. Prediction Confidence
     if primary_result and not isinstance(primary_result, dict):
         prediction_confidence = assess_prediction_confidence(
             primary_result['probability'],
@@ -843,7 +802,6 @@ def predict_comparison(
     else:
         prediction_confidence = {"level": "Unknown", "score": 0, "justification": "Unable to assess confidence"}
     
-    # 5. Agreement Analysis
     agreement = None
     if (rf_result and xgb_result and 
         not isinstance(rf_result, dict) and 
@@ -869,7 +827,6 @@ def predict_comparison(
             "error": xgb_error or "XGBoost not loaded"
         }
     
-    # 6. Prediction Reliability
     reliability = assess_prediction_reliability(
         input_quality,
         prediction_confidence,
@@ -877,7 +834,6 @@ def predict_comparison(
         primary_result
     )
     
-    # 7. Overall Assessment
     overall = generate_overall_assessment(
         primary_result,
         prediction_confidence,
@@ -886,7 +842,6 @@ def predict_comparison(
         reliability
     )
     
-    # 8. Build response
     response = {
         "state": state,
         "epi_week": epi_week,
@@ -959,5 +914,4 @@ def predict_batch(request: BatchPredictionRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)#   V 5 . 5   f o r c e   r e b u i l d  
- 
+    uvicorn.run(app, host="0.0.0.0", port=8000)
