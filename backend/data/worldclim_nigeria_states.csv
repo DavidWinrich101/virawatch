@@ -1,0 +1,38 @@
+state,gadm_name,mean_annual_temp_c,precip_seasonality_cv,mean_vapor_pressure_kpa,data_source,extraction_method,resolution,period
+Abia,Abia,26.41,65.76,2.772,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Adamawa,Adamawa,26.37,106.13,1.842,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Akwa Ibom,Akwa Ibom,26.49,63.88,2.908,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Anambra,Anambra,26.81,72.53,2.658,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Bauchi,Bauchi,25.89,122.24,1.611,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Bayelsa,Bayelsa,26.44,62.94,2.885,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Benue,Benue,26.96,82.68,2.458,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Borno,Borno,27.6,139.71,1.598,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Cross River,Cross River,26.28,70.21,2.712,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Delta,Delta,26.41,69.38,2.782,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Ebonyi,Ebonyi,27.27,72.79,2.696,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Edo,Edo,25.99,70.48,2.593,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Ekiti,Ekiti,24.61,69.84,2.322,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Enugu,Enugu,26.45,75.05,2.563,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+FCT,Federal Capital Territory,26.86,93.1,2.166,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Gombe,Gombe,26.58,118.75,1.698,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Imo,Imo,26.32,68.32,2.738,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Jigawa,Jigawa,26.88,145.05,1.513,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Kaduna,Kaduna,25.03,108.38,1.742,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Kano,Kano,25.95,132.3,1.564,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Katsina,Katsina,26.01,135.36,1.53,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Kebbi,Kebbi,28.18,114.5,1.829,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Kogi,Kogi,26.23,80.49,2.388,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Kwara,Kwara,26.35,83.83,2.281,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Lagos,Lagos,26.95,69.2,2.919,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Nasarawa,Nasarawa,27.1,92.43,2.225,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Niger,Niger,27.17,101.54,2.102,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Ogun,Ogun,26.75,66.65,2.753,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Ondo,Ondo,25.79,67.35,2.59,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Osun,Osun,25.74,67.3,2.482,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Oyo,Oyo,26.17,70.33,2.446,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Plateau,Plateau,25.58,99.51,1.851,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Rivers,Rivers,26.44,63.39,2.912,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Sokoto,Sokoto,28.2,133.19,1.616,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Taraba,Taraba,26.19,91.68,2.071,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Yobe,Yobe,27.37,148.51,1.482,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline
+Zamfara,Zamfara,26.91,124.8,1.668,WorldClim 2.1 (Fick & Hijmans 2017),Zonal statistics (rasterio + geopandas),2.5 arc-minutes (~4.5 km),1970-2000 baseline

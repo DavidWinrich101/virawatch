@@ -1,0 +1,81 @@
+{
+  "version": "3.3",
+  "algorithm": "Random Forest with SMOTE (NO Platt scaling)",
+  "features": [
+    "confirmed_cases",
+    "lag_1",
+    "lag_2",
+    "lag_3",
+    "lag_4",
+    "rainfall_lag8",
+    "temp_lag4",
+    "humidity_lag4",
+    "pop_density",
+    "is_endemic",
+    "epi_week",
+    "month",
+    "epi_week_sin",
+    "epi_week_cos"
+  ],
+  "training_period": "2018-2022",
+  "validation_period": "W52 2022-2025",
+  "test_period": "2026 W1",
+  "last_trained": "2026-07-18T04:55:35.755556",
+  "metrics": {
+    "Train": {
+      "PR-AUC": 0.7148,
+      "F2-Score": 0.7549,
+      "Sensitivity": 0.8446,
+      "Precision": 0.5297,
+      "Specificity": 0.9362,
+      "ROC-AUC": 0.9572,
+      "n_samples": 7141,
+      "n_positive": 560
+    },
+    "Validation": {
+      "PR-AUC": 0.2507,
+      "F2-Score": 0.1316,
+      "Sensitivity": 0.1111,
+      "Precision": 0.5,
+      "Specificity": 0.9928,
+      "ROC-AUC": 0.8305,
+      "n_samples": 148,
+      "n_positive": 9
+    },
+    "Test": {
+      "PR-AUC": 1.0,
+      "F2-Score": 0.625,
+      "Sensitivity": 1.0,
+      "Precision": 0.25,
+      "Specificity": 0.9167,
+      "ROC-AUC": 1.0,
+      "n_samples": 37,
+      "n_positive": 1
+    }
+  },
+  "feature_importance": {
+    "confirmed_cases": 0.142591552419401,
+    "lag_1": 0.14212147373973608,
+    "lag_3": 0.12490800746554517,
+    "lag_4": 0.1129869871935902,
+    "lag_2": 0.10801923552067812,
+    "epi_week_cos": 0.06865685741523977,
+    "epi_week_sin": 0.05998025961270365,
+    "epi_week": 0.05658366064829857,
+    "month": 0.052853815471457434,
+    "temp_lag4": 0.03763574740403773,
+    "rainfall_lag8": 0.025099364068279614,
+    "is_endemic": 0.024426461373445483,
+    "pop_density": 0.023987367554539233,
+    "humidity_lag4": 0.020149210113047777
+  },
+  "smote_applied": true,
+  "platt_scaling": false,
+  "fix": "REAL climate data from CHIRPS and WorldClim",
+  "data_sources": [
+    "NCDC",
+    "CHIRPS",
+    "WorldClim",
+    "NPC"
+  ]
+}

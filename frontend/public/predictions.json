@@ -1,0 +1,1031 @@
+{
+  "predictions": [
+    {
+      "state": "Abia",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.344,
+      "risk_tier": "Moderate",
+      "case_range_low": 2,
+      "case_range_high": 5,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Adamawa",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.155,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Akwa Ibom",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.23,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 3,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Anambra",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.28,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 4,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Bauchi",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.463,
+      "risk_tier": "Moderate",
+      "case_range_low": 2,
+      "case_range_high": 7,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Bayelsa",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.172,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 3,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Benue",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.449,
+      "risk_tier": "Moderate",
+      "case_range_low": 2,
+      "case_range_high": 7,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Borno",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.251,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 4,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Cross River",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.102,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Delta",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.304,
+      "risk_tier": "Moderate",
+      "case_range_low": 2,
+      "case_range_high": 5,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Ebonyi",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.554,
+      "risk_tier": "Moderate",
+      "case_range_low": 3,
+      "case_range_high": 8,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Edo",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.554,
+      "risk_tier": "Moderate",
+      "case_range_low": 3,
+      "case_range_high": 8,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Ekiti",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.142,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Enugu",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.234,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 4,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "FCT",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.098,
+      "risk_tier": "Minimal",
+      "case_range_low": 0,
+      "case_range_high": 1,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Continue standard surveillance protocols",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Gombe",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.233,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 3,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Imo",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.27,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 4,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Jigawa",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.132,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Kaduna",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.228,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 3,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Kano",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.234,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 4,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Katsina",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.166,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Kebbi",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.086,
+      "risk_tier": "Minimal",
+      "case_range_low": 0,
+      "case_range_high": 1,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Continue standard surveillance protocols",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Kogi",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.408,
+      "risk_tier": "Moderate",
+      "case_range_low": 2,
+      "case_range_high": 6,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Kwara",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.2,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 3,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Lagos",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.23,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 3,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Nasarawa",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.116,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Niger",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.141,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Ogun",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.19,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 3,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Ondo",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.55,
+      "risk_tier": "Moderate",
+      "case_range_low": 3,
+      "case_range_high": 8,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Osun",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.15,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Oyo",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.122,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Plateau",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.142,
+      "risk_tier": "Low",
+      "case_range_low": 1,
+      "case_range_high": 2,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Maintain routine surveillance and reporting",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Update health workers on case definitions",
+          "timeline": "1 month",
+          "responsible": "Training Coordinator"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Rivers",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.327,
+      "risk_tier": "Moderate",
+      "case_range_low": 2,
+      "case_range_high": 5,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Sokoto",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.066,
+      "risk_tier": "Minimal",
+      "case_range_low": 0,
+      "case_range_high": 1,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Continue standard surveillance protocols",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Taraba",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.361,
+      "risk_tier": "Moderate",
+      "case_range_low": 2,
+      "case_range_high": 5,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Yobe",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.087,
+      "risk_tier": "Minimal",
+      "case_range_low": 0,
+      "case_range_high": 1,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Continue standard surveillance protocols",
+          "timeline": "Ongoing",
+          "responsible": "Disease Surveillance Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    },
+    {
+      "state": "Zamfara",
+      "epi_week": 28,
+      "year": 2024,
+      "probability": 0.245,
+      "risk_tier": "Moderate",
+      "case_range_low": 1,
+      "case_range_high": 4,
+      "recommendations": [
+        {
+          "priority": 1,
+          "action": "Enhance surveillance in high-risk LGAs",
+          "timeline": "1 week",
+          "responsible": "LGA Disease Surveillance Officer"
+        },
+        {
+          "priority": 2,
+          "action": "Conduct community sensitization on Lassa fever prevention",
+          "timeline": "2 weeks",
+          "responsible": "Health Education Officer"
+        },
+        {
+          "priority": 3,
+          "action": "Review and stockpile essential medical supplies",
+          "timeline": "2 weeks",
+          "responsible": "State Logistics Officer"
+        }
+      ],
+      "timestamp": "2026-07-04T22:30:00Z",
+      "isOfflineFallback": true
+    }
+  ]
+}

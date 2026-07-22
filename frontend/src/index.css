@@ -1,0 +1,301 @@
+@import "tailwindcss";
+
+/* ============================================================
+   VIRAWATCH - Global Styles
+   Colour System v1.0
+   ============================================================ */
+
+/* ---------- Base ---------- */
+:root {
+  /* Backgrounds */
+  --virawatch-bg: #080912;
+  --virawatch-surface: #111827;
+  --virawatch-elevated: #1A2233;
+  --virawatch-border: #2A3446;
+
+  /* Primary Accent */
+  --virawatch-cyan: #00C8F8;
+  --virawatch-cyan-dark: #0099CC;
+  --virawatch-cyan-light: #33D6FF;
+
+  /* Secondary Accent */
+  --virawatch-blue: #3B82F6;
+
+  /* Risk Colours */
+  --virawatch-minimal: #10B981;
+  --virawatch-low: #00C8F8;
+  --virawatch-moderate: #F59E0B;
+  --virawatch-high: #F97316;
+  --virawatch-critical: #EF4444;
+
+  /* Typography */
+  --virawatch-heading: #F8FAFC;
+  --virawatch-subheading: #E2E8F0;
+  --virawatch-body: #CBD5E1;
+  --virawatch-meta: #94A3B8;
+  --virawatch-disabled: #64748B;
+}
+
+/* ---------- Base Styles ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--virawatch-bg);
+  color: var(--virawatch-body);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--virawatch-heading);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--virawatch-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--virawatch-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--virawatch-cyan-dark);
+}
+
+/* ---------- Selection ---------- */
+::selection {
+  background: var(--virawatch-cyan);
+  color: #ffffff;
+}
+
+/* ---------- Focus ---------- */
+*:focus-visible {
+  outline: 2px solid var(--virawatch-cyan);
+  outline-offset: 2px;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes gaugeFill {
+  from { stroke-dashoffset: 100%; }
+  to { stroke-dashoffset: var(--gauge-offset); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 300ms ease-out forwards;
+}
+
+.animate-slideIn {
+  animation: slideIn 250ms ease-out forwards;
+}
+
+.animate-pulse-soft {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--virawatch-surface);
+  border: 1px solid var(--virawatch-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: all 250ms ease;
+}
+
+.card:hover {
+  border-color: rgba(0, 200, 248, 0.2);
+}
+
+.card-elevated {
+  background: var(--virawatch-elevated);
+  border: 1px solid var(--virawatch-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Risk Badge Base ---------- */
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.risk-badge-minimal {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.risk-badge-low {
+  background: rgba(0, 200, 248, 0.15);
+  color: #00C8F8;
+  border-color: rgba(0, 200, 248, 0.25);
+}
+
+.risk-badge-moderate {
+  background: rgba(245, 158, 11, 0.15);
+  color: #F59E0B;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.risk-badge-high {
+  background: rgba(249, 115, 22, 0.15);
+  color: #F97316;
+  border-color: rgba(249, 115, 22, 0.25);
+}
+
+.risk-badge-critical {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+/* ---------- Endemic Badge ---------- */
+.badge-endemic {
+  background: #4B1D22;
+  color: #FF6B6B;
+  border: 1px solid rgba(255, 107, 107, 0.15);
+}
+
+.badge-nonendemic {
+  background: #123D34;
+  color: #34D399;
+  border: 1px solid rgba(52, 211, 153, 0.15);
+}
+
+/* ---------- Tooltip ---------- */
+.tooltip-trigger {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip-trigger:hover .tooltip-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tooltip-content {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--virawatch-elevated);
+  color: var(--virawatch-body);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  max-width: 280px;
+  width: max-content;
+  border: 1px solid var(--virawatch-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 200ms ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--virawatch-border);
+}
+
+.tooltip-content .tooltip-title {
+  color: var(--virawatch-heading);
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+/* ---------- Processing States ---------- */
+.processing-step {
+  opacity: 0.4;
+  transition: all 300ms ease;
+}
+
+.processing-step.active {
+  opacity: 1;
+  color: var(--virawatch-heading);
+}
+
+.processing-step.complete {
+  opacity: 0.7;
+  color: var(--virawatch-minimal);
+}
+
+/* ---------- Skeleton ---------- */
+.skeleton {
+  background: var(--virawatch-surface);
+  border-radius: 8px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 0.75rem;
+  background: var(--virawatch-border);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-card {
+  background: var(--virawatch-surface);
+  border: 1px solid var(--virawatch-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  min-height: 120px;
+}
+
+/* ---------- Utility ---------- */
+.text-virawatch-cyan { color: var(--virawatch-cyan); }
+.text-virawatch-blue { color: var(--virawatch-blue); }
+.text-virawatch-minimal { color: var(--virawatch-minimal); }
+.text-virawatch-low { color: var(--virawatch-low); }
+.text-virawatch-moderate { color: var(--virawatch-moderate); }
+.text-virawatch-high { color: var(--virawatch-high); }
+.text-virawatch-critical { color: var(--virawatch-critical); }
+
+.bg-virawatch-cyan { background-color: var(--virawatch-cyan); }
+.bg-virawatch-surface { background-color: var(--virawatch-surface); }
+.bg-virawatch-elevated { background-color: var(--virawatch-elevated); }
