@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "algorithm": "XGBoost",
+  "version": "5.0",
+  "algorithm": "XGBoost (Retrained locally for Render compatibility)",
   "features": [
     "confirmed_cases",
     "lag_1",
@@ -20,52 +20,32 @@
   "training_period": "2018-2022",
   "validation_period": "W52 2022-2025",
   "test_period": "2026 W1",
-  "last_trained": "2026-07-22T18:24:14.668432",
+  "last_trained": "2026-07-22T20:13:09.340649",
   "metrics": {
-    "Train": {
-      "PR-AUC": 0.5885,
-      "F2-Score": 0.6671,
-      "Sensitivity": 0.7643,
-      "Precision": 0.4421,
-      "Specificity": 0.9179,
-      "ROC-AUC": 0.9301,
-      "n_samples": 7141,
-      "n_positive": 560
-    },
     "Validation": {
-      "PR-AUC": 0.1522,
+      "PR-AUC": 0.16666666666666666,
       "F2-Score": 0.0,
       "Sensitivity": 0.0,
+      "Specificity": 1.0,
       "Precision": 0.0,
-      "Specificity": 0.9928,
-      "ROC-AUC": 0.8341,
-      "n_samples": 148,
-      "n_positive": 9
-    },
-    "Test": {
-      "PR-AUC": 1.0,
-      "F2-Score": 0.625,
-      "Sensitivity": 1.0,
-      "Precision": 0.25,
-      "Specificity": 0.9167,
-      "ROC-AUC": 1.0,
+      "ROC-AUC": 0.8611111111111112,
       "n_samples": 37,
       "n_positive": 1
     }
   },
   "feature_importance": {
-    "lag_2": 0.1826404184103012,
-    "lag_3": 0.12982894480228424,
-    "lag_4": 0.1277787834405899,
-    "lag_1": 0.10796904563903809,
-    "confirmed_cases": 0.10238148272037506,
-    "month": 0.07329549640417099,
-    "epi_week": 0.0647803470492363,
-    "epi_week_cos": 0.06049790233373642,
-    "epi_week_sin": 0.0514875203371048,
-    "is_endemic": 0.05090474709868431,
-    "rainfall_lag8": 0.027136271819472313,
-    "pop_density": 0.021299107000231743,
+    "is_endemic": 0.17720425128936768,
+    "lag_1": 0.11882196366786957,
+    "month": 0.09017252922058105,
+    "epi_week_cos": 0.08837403357028961,
+    "epi_week_sin": 0.0862780213356018,
+    "confirmed_cases": 0.08140512555837631,
+    "epi_week": 0.06995391845703125,
+    "lag_4": 0.06883753091096878,
+    "lag_3": 0.06642402708530426,
+    "lag_2": 0.05198853462934494,
+    "rainfall_lag8": 0.05106746405363083,
+    "pop_density": 0.04947257414460182,
     "temp_lag4": 0.0,
     "humidity_lag4": 0.0
   },
@@ -75,5 +55,6 @@
     "CHIRPS",
     "WorldClim",
     "NPC"
-  ]
+  ],
+  "note": "Retrained locally - removed use_label_encoder for Render compatibility"
 }
