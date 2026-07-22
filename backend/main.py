@@ -1,5 +1,5 @@
 """
-ViraWatch - FastAPI Backend (V5.3)
+ViraWatch - FastAPI Backend (V5.4)
 ===================================
 Multi-model prediction API with comprehensive prediction intelligence.
 
@@ -11,9 +11,9 @@ Features:
 - Prediction Reliability
 - Overall Assessment
 - 4-Week Forecast
-- XGBoost uses booster directly to avoid use_label_encoder issues
+- XGBoost loads from native JSON format to avoid use_label_encoder issues
 
-Version: 5.3.0
+Version: 5.4.0
 Author: ViraWatch Project
 Date: 2026-07-22
 """
@@ -30,7 +30,7 @@ from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-# Import XGBoost for DMatrix support
+# Import XGBoost for native format loading
 import xgboost as xgb
 
 # ============================================================================
@@ -116,11 +116,22 @@ def load_static_data():
 
 
 # ============================================================================
-# LOAD MODELS WITH GRACEFUL FALLBACK
+# LOAD XGBOOST NATIVE FORMAT
+# ============================================================================
+
+def load_xgboost_native(model_path):
+    """Load XGBoost model from native .json format"""
+    model = xgb.XGBClassifier()
+    model.load_model(model_path)
+    return model
+
+
+# ============================================================================
+# LOAD MODELS WITH NATIVE XGBOOST SUPPORT
 # ============================================================================
 
 def load_model_artifacts():
-    """Load all models, scalers, and configs with graceful fallback for XGBoost."""
+    """Load all models, scalers, and configs with native XGBoost support."""
     models = {}
     
     for model_key, meta in MODEL_METADATA.items():
@@ -129,34 +140,38 @@ def load_model_artifacts():
             scaler_path = os.path.join(MODELS_DIR, meta['scaler'])
             config_path = os.path.join(MODELS_DIR, meta['config'])
             
-            if os.path.exists(model_path) and os.path.exists(scaler_path):
-                # Try to load with joblib
-                try:
-                    model = joblib.load(model_path)
-                    scaler = joblib.load(scaler_path)
-                except ModuleNotFoundError as e:
-                    if 'numpy._core' in str(e) and model_key == 'xgb':
-                        print(f"[Model] ⚠️ XGBoost numpy compatibility issue: {e}")
-                        print(f"[Model] ℹ️ This is expected on Render with numpy < 2.0")
-                        models[model_key] = {
-                            'loaded': False,
-                            'error': 'numpy._core not found - model was saved with numpy 2.x but loaded with numpy 1.x',
-                            'error_type': 'numpy_compatibility'
-                        }
-                        continue
-                    else:
-                        raise e
+            if os.path.exists(scaler_path):
+                scaler = joblib.load(scaler_path)
                 
-                config = json.load(open(config_path)) if os.path.exists(config_path) else None
-                
-                # Verify model is fitted - handles XGBoost use_label_encoder
-                try:
-                    dummy = np.zeros((1, len(FEATURE_COLS)))
-                    
-                    # For XGBoost, handle the use_label_encoder verification differently
-                    if model_key == 'xgb':
+                # For XGBoost, try native JSON format FIRST
+                if model_key == 'xgb':
+                    json_path = os.path.join(MODELS_DIR, 'xgboost_model.json')
+                    if os.path.exists(json_path):
                         try:
-                            # Try to predict with a small sample
+                            model = load_xgboost_native(json_path)
+                            config = json.load(open(config_path)) if os.path.exists(config_path) else None
+                            models[model_key] = {
+                                'model': model,
+                                'scaler': scaler,
+                                'config': config,
+                                'loaded': True,
+                                'format': 'native_json'
+                            }
+                            print(f"[Model] ✅ XGBoost loaded from native JSON format")
+                            continue  # Skip pickle fallback
+                        except Exception as e:
+                            print(f"[Model] ⚠️ Failed to load native JSON: {e}")
+                            # Fall through to pickle
+                
+                # Try pickle/joblib format (for RF and XGB fallback)
+                if os.path.exists(model_path):
+                    try:
+                        model = joblib.load(model_path)
+                        config = json.load(open(config_path)) if os.path.exists(config_path) else None
+                        
+                        # Verify model is fitted
+                        try:
+                            dummy = np.zeros((1, len(FEATURE_COLS)))
                             model.predict_proba(dummy)
                             models[model_key] = {
                                 'model': model,
@@ -164,37 +179,36 @@ def load_model_artifacts():
                                 'config': config,
                                 'loaded': True
                             }
-                            print(f"[Model] ✅ {meta['name']} loaded successfully")
+                            print(f"[Model] ✅ {meta['name']} loaded successfully (pickle)")
                         except AttributeError as e:
-                            if 'use_label_encoder' in str(e):
-                                # Known issue - model is actually loaded but verification fails
-                                print(f"[Model] ⚠️ {meta['name']} loaded but verification failed due to use_label_encoder")
-                                print(f"[Model] ℹ️ Model will still work for predictions using booster")
+                            if 'use_label_encoder' in str(e) and model_key == 'xgb':
+                                print(f"[Model] ⚠️ {meta['name']} loaded but has use_label_encoder warning")
                                 models[model_key] = {
                                     'model': model,
                                     'scaler': scaler,
                                     'config': config,
-                                    'loaded': True,  # Mark as loaded anyway
+                                    'loaded': True,
                                     'verification_warning': True
                                 }
                             else:
-                                raise e
-                    else:
-                        # Regular verification for Random Forest
-                        model.predict_proba(dummy)
-                        models[model_key] = {
-                            'model': model,
-                            'scaler': scaler,
-                            'config': config,
-                            'loaded': True
-                        }
-                        print(f"[Model] ✅ {meta['name']} loaded successfully")
-                        
-                except Exception as e:
-                    print(f"[Model] ⚠️ {meta['name']} failed verification: {e}")
+                                print(f"[Model] ⚠️ {meta['name']} failed verification: {e}")
+                                models[model_key] = {'loaded': False}
+                    except ModuleNotFoundError as e:
+                        if 'numpy._core' in str(e) and model_key == 'xgb':
+                            print(f"[Model] ⚠️ XGBoost numpy compatibility issue: {e}")
+                            print(f"[Model] ℹ️ Make sure xgboost_model.json exists")
+                            models[model_key] = {
+                                'loaded': False,
+                                'error': 'numpy._core not found - please use native JSON format',
+                                'error_type': 'numpy_compatibility'
+                            }
+                        else:
+                            raise e
+                else:
+                    print(f"[Model] ⚠️ {meta['name']} model file not found")
                     models[model_key] = {'loaded': False}
             else:
-                print(f"[Model] ⚠️ {meta['name']} not found")
+                print(f"[Model] ⚠️ {meta['name']} scaler not found")
                 models[model_key] = {'loaded': False}
         except Exception as e:
             print(f"[Model] ❌ Failed to load {meta['name']}: {e}")
@@ -575,7 +589,7 @@ def make_prediction(
     state, epi_week, year, rainfall_mm, temp_c, recent_cases, 
     endemic_flag, model_data, static_data, model_key
 ):
-    """Standard prediction for Random Forest."""
+    """Standard prediction for Random Forest and XGBoost."""
     features = construct_features(
         state, epi_week, year, rainfall_mm, temp_c, 
         recent_cases, endemic_flag, static_data
@@ -612,58 +626,6 @@ def make_prediction(
     }
 
 
-def make_xgb_prediction(
-    state, epi_week, year, rainfall_mm, temp_c, recent_cases, 
-    endemic_flag, model_data, static_data, model_key
-):
-    """Special prediction function for XGBoost to handle use_label_encoder issues."""
-    features = construct_features(
-        state, epi_week, year, rainfall_mm, temp_c, 
-        recent_cases, endemic_flag, static_data
-    )
-    
-    feature_vector = np.array([[features[col] for col in FEATURE_COLS]])
-    feature_scaled = model_data['scaler'].transform(feature_vector)
-    
-    # For XGBoost, use the booster directly to avoid use_label_encoder
-    try:
-        # Try normal prediction first
-        probability = float(model_data['model'].predict_proba(feature_scaled)[0, 1])
-    except AttributeError as e:
-        if 'use_label_encoder' in str(e):
-            # Fallback: use the underlying booster
-            booster = model_data['model'].get_booster()
-            dmatrix = xgb.DMatrix(feature_scaled)
-            probability = float(booster.predict(dmatrix)[0])
-        else:
-            raise e
-    
-    is_endemic = bool(endemic_flag)
-    risk_tier = classify_risk(probability, is_endemic)
-    case_low, case_high = estimate_case_range(probability, is_endemic)
-    recommendations = generate_recommendations(risk_tier, state)
-    forecast = generate_forecast(state, epi_week, year, probability, is_endemic)
-    
-    meta = MODEL_METADATA[model_key]
-    
-    return {
-        "state": state,
-        "epi_week": epi_week,
-        "year": year,
-        "probability": round(probability, 4),
-        "risk_tier": risk_tier,
-        "case_range_low": case_low,
-        "case_range_high": case_high,
-        "recommendations": recommendations,
-        "forecast": forecast,
-        "model_used": meta['display_name'],
-        "model_type": meta['name'],
-        "is_primary": meta['is_primary'],
-        "features_used": {k: round(v, 4) if isinstance(v, float) else v for k, v in features.items()},
-        "timestamp": datetime.now().isoformat()
-    }
-
-
 # ============================================================================
 # FASTAPI APP
 # ============================================================================
@@ -671,7 +633,7 @@ def make_xgb_prediction(
 app = FastAPI(
     title="ViraWatch API",
     description="Lassa Fever outbreak risk prediction using real climate and epidemiological data",
-    version="5.3.0"
+    version="5.4.0"
 )
 
 # CORS - Production Ready
@@ -707,7 +669,7 @@ MODELS = load_model_artifacts()
 def root():
     return {
         "message": "ViraWatch API",
-        "version": "5.3.0",
+        "version": "5.4.0",
         "status": "operational",
         "endpoints": ["/health", "/model-info", "/predict", "/predict-comparison", "/predict-batch"]
     }
@@ -718,7 +680,7 @@ def health_check():
     rf_loaded = MODELS.get('rf', {}).get('loaded', False)
     xgb_loaded = MODELS.get('xgb', {}).get('loaded', False)
     xgb_error = MODELS.get('xgb', {}).get('error', None)
-    xgb_warning = MODELS.get('xgb', {}).get('verification_warning', False)
+    xgb_format = MODELS.get('xgb', {}).get('format', None)
     
     return {
         "status": "operational",
@@ -727,12 +689,12 @@ def health_check():
             "xgboost": xgb_loaded
         },
         "xgboost_error": xgb_error if not xgb_loaded else None,
-        "xgboost_warning": xgb_warning if xgb_loaded else None,
+        "xgboost_format": xgb_format if xgb_loaded else None,
         "primary_model": get_primary_model(),
         "platt_scaling": False,
-        "version": "5.3.0",
+        "version": "5.4.0",
         "timestamp": datetime.now().isoformat(),
-        "note": "Random Forest is fully operational. XGBoost may have verification warnings but should work."
+        "note": "Random Forest is fully operational. XGBoost loaded from native JSON format."
     }
 
 
@@ -754,10 +716,10 @@ def model_info():
     
     primary = get_primary_model()
     xgb_loaded = MODELS.get('xgb', {}).get('loaded', False)
-    xgb_warning = MODELS.get('xgb', {}).get('verification_warning', False)
+    xgb_format = MODELS.get('xgb', {}).get('format', None)
     
     return {
-        "version": "5.3.0",
+        "version": "5.4.0",
         "primary_model": primary,
         "selection_reason": f"{primary} selected because it achieved the strongest validation performance during model evaluation.",
         "models": {
@@ -772,10 +734,10 @@ def model_info():
                 "name": "XGBoost",
                 "is_primary": primary == "XGBoost",
                 "loaded": xgb_loaded,
+                "format": xgb_format,
                 "metrics": xgb_config.get('metrics', {}),
                 "feature_importance": xgb_config.get('feature_importance', {}),
-                "error": MODELS.get('xgb', {}).get('error', None) if not xgb_loaded else None,
-                "warning": xgb_warning if xgb_loaded else None
+                "error": MODELS.get('xgb', {}).get('error', None) if not xgb_loaded else None
             }
         }
     }
@@ -803,17 +765,10 @@ def predict(
             detail=f"Model '{model}' not loaded. Error: {error_msg}"
         )
     
-    # Use special XGBoost prediction if needed
-    if model == 'xgb':
-        result = make_xgb_prediction(
-            state, epi_week, year, rainfall_mm, temp_c, recent_cases,
-            endemic_flag, model_data, STATIC_DATA, model
-        )
-    else:
-        result = make_prediction(
-            state, epi_week, year, rainfall_mm, temp_c, recent_cases,
-            endemic_flag, model_data, STATIC_DATA, model
-        )
+    result = make_prediction(
+        state, epi_week, year, rainfall_mm, temp_c, recent_cases,
+        endemic_flag, model_data, STATIC_DATA, model
+    )
     
     return result
 
@@ -848,14 +803,13 @@ def predict_comparison(
     else:
         print("[Error] RF model not loaded!")
     
-    # Try XGBoost - use special XGBoost prediction function
+    # Try XGBoost
     xgb_data = MODELS.get('xgb')
     xgb_is_loaded = xgb_data and xgb_data.get('loaded', False)
     
-    # If XGBoost is loaded (even with warning), try to use it
     if xgb_is_loaded:
         try:
-            xgb_result = make_xgb_prediction(
+            xgb_result = make_prediction(
                 state, epi_week, year, rainfall_mm, temp_c, recent_cases,
                 endemic_flag, xgb_data, STATIC_DATA, 'xgb'
             )
@@ -874,13 +828,11 @@ def predict_comparison(
     
     # 3. SMART SELECTION with fallback
     if primary_model_name == "Random Forest":
-        # RF should be primary
         if rf_result and not isinstance(rf_result, dict):
             primary_result = rf_result
             comparison_result = xgb_result
             comparison_name = "XGBoost" if xgb_is_loaded else "XGBoost (Not Available)"
         elif xgb_result and not isinstance(xgb_result, dict):
-            # RF failed, fallback to XGBoost
             primary_result = xgb_result
             comparison_result = rf_result
             comparison_name = "Random Forest (Fallback)"
@@ -890,14 +842,12 @@ def predict_comparison(
             comparison_result = None
             comparison_name = "None Available"
     else:
-        # XGBoost should be primary
         if xgb_result and not isinstance(xgb_result, dict):
             primary_result = xgb_result
             comparison_result = rf_result
             comparison_name = "Random Forest" if rf_result and not isinstance(rf_result, dict) else "Random Forest (Not Available)"
             primary_model_name = "XGBoost"
         elif rf_result and not isinstance(rf_result, dict):
-            # XGBoost failed, fallback to RF
             primary_result = rf_result
             comparison_result = xgb_result
             comparison_name = "XGBoost"
@@ -926,7 +876,6 @@ def predict_comparison(
     if (rf_result and xgb_result and 
         not isinstance(rf_result, dict) and 
         not isinstance(xgb_result, dict)):
-        # Both models worked - calculate agreement
         agreement = calculate_agreement(
             rf_result['probability'],
             xgb_result['probability'],
@@ -935,7 +884,6 @@ def predict_comparison(
         )
         print(f"[Debug] Agreement calculated: {agreement.get('level') if agreement else 'None'}")
     elif xgb_error or not xgb_is_loaded:
-        # XGBoost not available - create agreement with note
         rf_prob = rf_result['probability'] * 100 if rf_result and not isinstance(rf_result, dict) else None
         agreement = {
             "level": "N/A",
@@ -989,6 +937,7 @@ def predict_comparison(
             "case_range_low": comparison_result.get('case_range_low') if comparison_result and not isinstance(comparison_result, dict) else None,
             "case_range_high": comparison_result.get('case_range_high') if comparison_result and not isinstance(comparison_result, dict) else None,
             "loaded": xgb_is_loaded,
+            "format": MODELS.get('xgb', {}).get('format', None) if xgb_is_loaded else None,
             "error": xgb_error if not xgb_is_loaded or (xgb_result and isinstance(xgb_result, dict)) else None
         },
         "agreement": agreement,
@@ -997,7 +946,7 @@ def predict_comparison(
         "reliability": reliability,
         "overall_assessment": overall,
         "features_used": primary_result.get('features_used') if primary_result and not isinstance(primary_result, dict) else {},
-        "note": "Random Forest is fully operational. XGBoost comparison is available when numpy compatibility is resolved."
+        "note": "Random Forest is fully operational. XGBoost loaded from native JSON format."
     }
     
     return response
@@ -1020,19 +969,11 @@ def predict_batch(request: BatchPredictionRequest):
     results = []
     for pred in request.predictions:
         try:
-            # Use special XGBoost prediction if needed
-            if model_key == 'xgb':
-                result = make_xgb_prediction(
-                    pred['state'], pred['epi_week'], pred['year'],
-                    pred['rainfall_mm'], pred['temp_c'], pred['recent_cases'],
-                    pred['endemic_flag'], model_data, STATIC_DATA, model_key
-                )
-            else:
-                result = make_prediction(
-                    pred['state'], pred['epi_week'], pred['year'],
-                    pred['rainfall_mm'], pred['temp_c'], pred['recent_cases'],
-                    pred['endemic_flag'], model_data, STATIC_DATA, model_key
-                )
+            result = make_prediction(
+                pred['state'], pred['epi_week'], pred['year'],
+                pred['rainfall_mm'], pred['temp_c'], pred['recent_cases'],
+                pred['endemic_flag'], model_data, STATIC_DATA, model_key
+            )
             results.append(result)
         except Exception as e:
             results.append({

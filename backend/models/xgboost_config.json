@@ -1,6 +1,6 @@
 {
   "version": "5.0",
-  "algorithm": "XGBoost (Retrained locally for Render compatibility)",
+  "algorithm": "XGBoost (Native JSON format - no pickle issues)",
   "features": [
     "confirmed_cases",
     "lag_1",
@@ -20,7 +20,7 @@
   "training_period": "2018-2022",
   "validation_period": "W52 2022-2025",
   "test_period": "2026 W1",
-  "last_trained": "2026-07-22T20:13:09.340649",
+  "last_trained": "2026-07-22T22:47:01.968250",
   "metrics": {
     "Validation": {
       "PR-AUC": 0.16666666666666666,
@@ -56,5 +56,5 @@
     "WorldClim",
     "NPC"
   ],
-  "note": "Retrained locally - removed use_label_encoder for Render compatibility"
+  "note": "Saved using XGBoost native .json format to avoid pickle/use_label_encoder issues"
 }
