@@ -764,6 +764,7 @@ def predict_comparison(
             rf_result = {"error": str(e)}
     else:
         print("[Error] RF model not loaded!")
+        rf_result = {"error": "RF model not loaded"}
     
     xgb_data = MODELS.get('xgb')
     xgb_is_loaded = xgb_data and xgb_data.get('loaded', False)
@@ -788,13 +789,18 @@ def predict_comparison(
     comparison_result = xgb_result
     primary_model_name = "Random Forest"
     comparison_name = "XGBoost" if xgb_is_loaded else "XGBoost (Not Available)"
-    print(f"[Debug] Using RF as primary: {primary_result.get('probability') if primary_result and not isinstance(primary_result, dict) else 'None'}")
+    
+    # Debug the result
+    if primary_result and 'error' not in primary_result:
+        print(f"[Debug] Using RF as primary: {primary_result.get('probability')}")
+    else:
+        print(f"[Debug] RF primary result: {primary_result}")
     
     input_quality = assess_input_quality(
         state, epi_week, year, rainfall_mm, temp_c, recent_cases, endemic_flag
     )
     
-    if primary_result and not isinstance(primary_result, dict):
+    if primary_result and 'error' not in primary_result:
         prediction_confidence = assess_prediction_confidence(
             primary_result['probability'],
             primary_result.get('risk_tier', 'Low')
@@ -803,9 +809,8 @@ def predict_comparison(
         prediction_confidence = {"level": "Unknown", "score": 0, "justification": "Unable to assess confidence"}
     
     agreement = None
-    if (rf_result and xgb_result and 
-        not isinstance(rf_result, dict) and 
-        not isinstance(xgb_result, dict)):
+    if (rf_result and 'error' not in rf_result and 
+        xgb_result and 'error' not in xgb_result):
         agreement = calculate_agreement(
             rf_result['probability'],
             xgb_result['probability'],
@@ -814,7 +819,7 @@ def predict_comparison(
         )
         print(f"[Debug] Agreement calculated: {agreement.get('level') if agreement else 'None'}")
     else:
-        rf_prob = rf_result['probability'] * 100 if rf_result and not isinstance(rf_result, dict) else None
+        rf_prob = rf_result['probability'] * 100 if rf_result and 'error' not in rf_result else None
         agreement = {
             "level": "N/A",
             "score": 0,
@@ -849,35 +854,34 @@ def predict_comparison(
         "timestamp": datetime.now().isoformat(),
         "primary_prediction": {
             "model": primary_model_name,
-            "probability": primary_result['probability'] if primary_result and not isinstance(primary_result, dict) else None,
-            "risk_tier": primary_result.get('risk_tier') if primary_result and not isinstance(primary_result, dict) else None,
-            "case_range_low": primary_result.get('case_range_low') if primary_result and not isinstance(primary_result, dict) else None,
-            "case_range_high": primary_result.get('case_range_high') if primary_result and not isinstance(primary_result, dict) else None,
+            "probability": primary_result['probability'] if primary_result and 'error' not in primary_result else None,
+            "risk_tier": primary_result.get('risk_tier') if primary_result and 'error' not in primary_result else None,
+            "case_range_low": primary_result.get('case_range_low') if primary_result and 'error' not in primary_result else None,
+            "case_range_high": primary_result.get('case_range_high') if primary_result and 'error' not in primary_result else None,
             "confidence": prediction_confidence,
-            "forecast": primary_result.get('forecast') if primary_result and not isinstance(primary_result, dict) else [],
-            "recommendations": primary_result.get('recommendations') if primary_result and not isinstance(primary_result, dict) else []
+            "forecast": primary_result.get('forecast') if primary_result and 'error' not in primary_result else [],
+            "recommendations": primary_result.get('recommendations') if primary_result and 'error' not in primary_result else []
         },
         "comparison_prediction": {
             "model": comparison_name,
-            "probability": comparison_result['probability'] if comparison_result and not isinstance(comparison_result, dict) else None,
-            "risk_tier": comparison_result.get('risk_tier') if comparison_result and not isinstance(comparison_result, dict) else None,
-            "case_range_low": comparison_result.get('case_range_low') if comparison_result and not isinstance(comparison_result, dict) else None,
-            "case_range_high": comparison_result.get('case_range_high') if comparison_result and not isinstance(comparison_result, dict) else None,
+            "probability": comparison_result['probability'] if comparison_result and 'error' not in comparison_result else None,
+            "risk_tier": comparison_result.get('risk_tier') if comparison_result and 'error' not in comparison_result else None,
+            "case_range_low": comparison_result.get('case_range_low') if comparison_result and 'error' not in comparison_result else None,
+            "case_range_high": comparison_result.get('case_range_high') if comparison_result and 'error' not in comparison_result else None,
             "loaded": xgb_is_loaded,
             "format": MODELS.get('xgb', {}).get('format', None) if xgb_is_loaded else None,
-            "error": xgb_error if not xgb_is_loaded or (xgb_result and isinstance(xgb_result, dict)) else None
+            "error": xgb_error if not xgb_is_loaded or (xgb_result and 'error' in xgb_result) else None
         },
         "agreement": agreement,
         "input_quality": input_quality,
         "prediction_confidence": prediction_confidence,
         "reliability": reliability,
         "overall_assessment": overall,
-        "features_used": primary_result.get('features_used') if primary_result and not isinstance(primary_result, dict) else {},
+        "features_used": primary_result.get('features_used') if primary_result and 'error' not in primary_result else {},
         "note": "Random Forest is fully operational. XGBoost loaded from native JSON format."
     }
     
     return response
-
 
 class BatchPredictionRequest(BaseModel):
     predictions: List[dict]
