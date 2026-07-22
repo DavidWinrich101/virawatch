@@ -1,5 +1,5 @@
 """
-ViraWatch - FastAPI Backend (V5.2)
+ViraWatch - FastAPI Backend (V5.3)
 ===================================
 Multi-model prediction API with comprehensive prediction intelligence.
 
@@ -11,9 +11,9 @@ Features:
 - Prediction Reliability
 - Overall Assessment
 - 4-Week Forecast
-- Graceful XGBoost fallback with verification warnings
+- XGBoost uses booster directly to avoid use_label_encoder issues
 
-Version: 5.2.0
+Version: 5.3.0
 Author: ViraWatch Project
 Date: 2026-07-22
 """
@@ -29,6 +29,9 @@ from datetime import datetime, timedelta
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+# Import XGBoost for DMatrix support
+import xgboost as xgb
 
 # ============================================================================
 # CONFIGURATION
@@ -166,7 +169,7 @@ def load_model_artifacts():
                             if 'use_label_encoder' in str(e):
                                 # Known issue - model is actually loaded but verification fails
                                 print(f"[Model] ⚠️ {meta['name']} loaded but verification failed due to use_label_encoder")
-                                print(f"[Model] ℹ️ Model will still work for predictions")
+                                print(f"[Model] ℹ️ Model will still work for predictions using booster")
                                 models[model_key] = {
                                     'model': model,
                                     'scaler': scaler,
@@ -565,13 +568,14 @@ def get_primary_model():
 
 
 # ============================================================================
-# PREDICTION
+# PREDICTION FUNCTIONS
 # ============================================================================
 
 def make_prediction(
     state, epi_week, year, rainfall_mm, temp_c, recent_cases, 
     endemic_flag, model_data, static_data, model_key
 ):
+    """Standard prediction for Random Forest."""
     features = construct_features(
         state, epi_week, year, rainfall_mm, temp_c, 
         recent_cases, endemic_flag, static_data
@@ -608,6 +612,58 @@ def make_prediction(
     }
 
 
+def make_xgb_prediction(
+    state, epi_week, year, rainfall_mm, temp_c, recent_cases, 
+    endemic_flag, model_data, static_data, model_key
+):
+    """Special prediction function for XGBoost to handle use_label_encoder issues."""
+    features = construct_features(
+        state, epi_week, year, rainfall_mm, temp_c, 
+        recent_cases, endemic_flag, static_data
+    )
+    
+    feature_vector = np.array([[features[col] for col in FEATURE_COLS]])
+    feature_scaled = model_data['scaler'].transform(feature_vector)
+    
+    # For XGBoost, use the booster directly to avoid use_label_encoder
+    try:
+        # Try normal prediction first
+        probability = float(model_data['model'].predict_proba(feature_scaled)[0, 1])
+    except AttributeError as e:
+        if 'use_label_encoder' in str(e):
+            # Fallback: use the underlying booster
+            booster = model_data['model'].get_booster()
+            dmatrix = xgb.DMatrix(feature_scaled)
+            probability = float(booster.predict(dmatrix)[0])
+        else:
+            raise e
+    
+    is_endemic = bool(endemic_flag)
+    risk_tier = classify_risk(probability, is_endemic)
+    case_low, case_high = estimate_case_range(probability, is_endemic)
+    recommendations = generate_recommendations(risk_tier, state)
+    forecast = generate_forecast(state, epi_week, year, probability, is_endemic)
+    
+    meta = MODEL_METADATA[model_key]
+    
+    return {
+        "state": state,
+        "epi_week": epi_week,
+        "year": year,
+        "probability": round(probability, 4),
+        "risk_tier": risk_tier,
+        "case_range_low": case_low,
+        "case_range_high": case_high,
+        "recommendations": recommendations,
+        "forecast": forecast,
+        "model_used": meta['display_name'],
+        "model_type": meta['name'],
+        "is_primary": meta['is_primary'],
+        "features_used": {k: round(v, 4) if isinstance(v, float) else v for k, v in features.items()},
+        "timestamp": datetime.now().isoformat()
+    }
+
+
 # ============================================================================
 # FASTAPI APP
 # ============================================================================
@@ -615,7 +671,7 @@ def make_prediction(
 app = FastAPI(
     title="ViraWatch API",
     description="Lassa Fever outbreak risk prediction using real climate and epidemiological data",
-    version="5.2.0"
+    version="5.3.0"
 )
 
 # CORS - Production Ready
@@ -651,7 +707,7 @@ MODELS = load_model_artifacts()
 def root():
     return {
         "message": "ViraWatch API",
-        "version": "5.2.0",
+        "version": "5.3.0",
         "status": "operational",
         "endpoints": ["/health", "/model-info", "/predict", "/predict-comparison", "/predict-batch"]
     }
@@ -674,7 +730,7 @@ def health_check():
         "xgboost_warning": xgb_warning if xgb_loaded else None,
         "primary_model": get_primary_model(),
         "platt_scaling": False,
-        "version": "5.2.0",
+        "version": "5.3.0",
         "timestamp": datetime.now().isoformat(),
         "note": "Random Forest is fully operational. XGBoost may have verification warnings but should work."
     }
@@ -701,7 +757,7 @@ def model_info():
     xgb_warning = MODELS.get('xgb', {}).get('verification_warning', False)
     
     return {
-        "version": "5.2.0",
+        "version": "5.3.0",
         "primary_model": primary,
         "selection_reason": f"{primary} selected because it achieved the strongest validation performance during model evaluation.",
         "models": {
@@ -747,10 +803,17 @@ def predict(
             detail=f"Model '{model}' not loaded. Error: {error_msg}"
         )
     
-    result = make_prediction(
-        state, epi_week, year, rainfall_mm, temp_c, recent_cases,
-        endemic_flag, model_data, STATIC_DATA, model
-    )
+    # Use special XGBoost prediction if needed
+    if model == 'xgb':
+        result = make_xgb_prediction(
+            state, epi_week, year, rainfall_mm, temp_c, recent_cases,
+            endemic_flag, model_data, STATIC_DATA, model
+        )
+    else:
+        result = make_prediction(
+            state, epi_week, year, rainfall_mm, temp_c, recent_cases,
+            endemic_flag, model_data, STATIC_DATA, model
+        )
     
     return result
 
@@ -785,14 +848,14 @@ def predict_comparison(
     else:
         print("[Error] RF model not loaded!")
     
-    # Try XGBoost - CHECK BOTH loaded AND verification_warning
+    # Try XGBoost - use special XGBoost prediction function
     xgb_data = MODELS.get('xgb')
     xgb_is_loaded = xgb_data and xgb_data.get('loaded', False)
     
     # If XGBoost is loaded (even with warning), try to use it
     if xgb_is_loaded:
         try:
-            xgb_result = make_prediction(
+            xgb_result = make_xgb_prediction(
                 state, epi_week, year, rainfall_mm, temp_c, recent_cases,
                 endemic_flag, xgb_data, STATIC_DATA, 'xgb'
             )
@@ -957,11 +1020,19 @@ def predict_batch(request: BatchPredictionRequest):
     results = []
     for pred in request.predictions:
         try:
-            result = make_prediction(
-                pred['state'], pred['epi_week'], pred['year'],
-                pred['rainfall_mm'], pred['temp_c'], pred['recent_cases'],
-                pred['endemic_flag'], model_data, STATIC_DATA, model_key
-            )
+            # Use special XGBoost prediction if needed
+            if model_key == 'xgb':
+                result = make_xgb_prediction(
+                    pred['state'], pred['epi_week'], pred['year'],
+                    pred['rainfall_mm'], pred['temp_c'], pred['recent_cases'],
+                    pred['endemic_flag'], model_data, STATIC_DATA, model_key
+                )
+            else:
+                result = make_prediction(
+                    pred['state'], pred['epi_week'], pred['year'],
+                    pred['rainfall_mm'], pred['temp_c'], pred['recent_cases'],
+                    pred['endemic_flag'], model_data, STATIC_DATA, model_key
+                )
             results.append(result)
         except Exception as e:
             results.append({
